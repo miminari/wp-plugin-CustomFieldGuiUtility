@@ -206,36 +206,42 @@ jQuery(function($){
         var id = $(this).attr('title').replace(/#media-head-/,'');
         var media_url = $(this).closest('tr.submit').prevAll('tr.url').find('td.field input.urlfield').val();
         var imf_val = '[' + id + ']' + media_url;
-
-        var parent_doc = this.ownerDocument.defaultView || this.ownerDocument.parentWindow;
-        parent_doc = parent_doc.parent.document;
-
-        var imf_clc_id = '#' + getCookie('imf_clc_id');
-        var imf_elm = $(parent_doc).find(imf_clc_id);
-        setCookie('imf_clc_id','');
-        
-        // カスタムフィールドに値を入れる
-        if (imf_val) {
-            imf_elm.find('input.data').val(imf_val);
-            // テキストフィールドにファイルの種類のアイコンとキャンセルボタンを表示
-            var media_url = getMediaURL (imf_val);
-            var media_type = getMediaType (media_url);
-            if (media_type) {
-                imf_elm
-                    .find('input.data')
-                        .css('background','url(' + images_url + media_type + '.png) no-repeat 3px center')
-                        .css('padding-left','20px')
-                    .end()
-                    .find('a.image')
-                        .attr('href',media_url)
-                        .html('<img src="' + media_url + '" width="150" />');
-            } else {
-                imf_elm.find('input.data').removeAttr('style');          
+        if (!media_url) {
+            alert('リンクURLを指定してください。');
+        } else {
+            var imf_val = '[' + id + ']' + media_url;
+    
+            var parent_doc = this.ownerDocument.defaultView || this.ownerDocument.parentWindow;
+            parent_doc = parent_doc.parent.document;
+    
+            var imf_clc_id = '#' + getCookie('imf_clc_id');
+            var imf_elm = $(parent_doc).find(imf_clc_id);
+            setCookie('imf_clc_id','');
+            
+            // カスタムフィールドに値を入れる
+            if (imf_val) {
+                //imf_elm.find('input.data').val(imf_val);
+                imf_elm.find('input.data').val(media_url);
+                // テキストフィールドにファイルの種類のアイコンとキャンセルボタンを表示
+                var media_url = getMediaURL (imf_val);
+                var media_type = getMediaType (media_url);
+                if (media_type) {
+                    imf_elm
+                        .find('input.data')
+                            .css('background','url(' + images_url + media_type + '.png) no-repeat 3px center')
+                            .css('padding-left','20px')
+                        .end()
+                        .find('a.image')
+                            .attr('href',media_url)
+                            .html('<img src="' + media_url + '" width="150" />');
+                } else {
+                    imf_elm.find('input.data').removeAttr('style');          
+                }
+                imf_elm.find('img.cancel').attr('src', cancel_png).show();
             }
-            imf_elm.find('img.cancel').attr('src', cancel_png).show();
+    
+            $('p.ml-submit input:submit').click();
         }
-
-        $('p.ml-submit input:submit').click();
     });
     // カスタムフィールドに「URL」を挿入するボタンのイベント [end]
 
