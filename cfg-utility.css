@@ -116,3 +116,7 @@ div.radio p.cfg_input {
 form#post .err {
     background-color: #FFC8C5 !important;
 }
+
+p.cfg_sample {
+    margin-right: 160px;
+}
